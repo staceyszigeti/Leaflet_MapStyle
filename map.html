@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Quick Start - Leaflet</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
+
+
+	
+</head>
+<body>
+
+
+
+<div id="mapid" style="width: 1800px; height: 850px;"></div>
+<script>
+
+	var mymap = L.map('mapid').setView([-6.553416, 112.258888], 5);
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+
+</script>
+<br>
+<br>
+
+<div id="mapid2" style="width: 1800px; height: 850px;"></div>
+<script>
+
+	var mymap = L.map('mapid2').setView([-6.553416, 112.258888], 5);
+
+	L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+		maxZoom: 18,
+		attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+
+</script>
+
+<br>
+<br>
+
+<div id="mapid3" style="width: 1800px; height: 850px;"></div>
+<script>
+
+	var mymap = L.map('mapid3').setView([1.312132, 103.605678], 10);
+
+	L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+		maxZoom: 18,
+		attribution: 'Powered by &copy; <a href="http://fastrrr.com/", class="your_class">Fastrrr</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+	
+	var OpenSeaMap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+	attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
+	}).addTo(mymap);;
+
+</script>
+
+<br>
+<br>
+
+<div id="mapid4" style="width: 1800px; height: 850px;"></div>
+<script>
+
+	var mymap = L.map('mapid4').setView([1.312132, 103.605678], 10);
+
+	L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+		maxZoom: 18,
+		attribution: 'Powered by &copy; <a href="http://fastrrr.com/", class="your_class">Fastrrr</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+	
+	var OpenSeaMap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+	attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
+	}).addTo(mymap);;
+
+</script>
+
+<br>
+<br>
+
+<div id="mapid5" style="width: 1800px; height: 850px;"></div>
+<script>
+
+	var mymap = L.map('mapid5').setView([1.312132, 103.605678], 10);
+
+	var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(mymap);
+	
+	var OpenWeatherMap_Wind = L.tileLayer('http://{s}.tile.openweathermap.org/map/wind/{z}/{x}/{y}.png?appid={apiKey}', {
+		maxZoom: 19,
+		attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
+		apiKey: '9b6efbfc381db86aa4922df9a21a20bd',
+		opacity: 1
+	}).addTo(mymap);
+
+</script>
+
+</body>
+</html>
