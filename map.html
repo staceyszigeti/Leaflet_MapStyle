@@ -79,11 +79,15 @@ $.getJSON('wind-global.json', function (data) {
 		displayValues: true,
 		displayOptions: {
 			velocityType: 'GBR Wind',
+			position: 'bottomleft',
 			displayPosition: 'bottomleft',
-			displayEmptyString: 'No wind data'
+			displayEmptyString: 'No wind data',
+			speedUnit: 'kt',
 		},
 		data: data,
-		maxVelocity: 10
+		minVelocity: 0,          // used to align color scale
+		maxVelocity: 10,         // used to align color scale
+		velocityScale: 0.020,    // modifier for particle animations, arbitrarily defaults to 0.005
 	});
 
 	layerControl.addOverlay(velocityLayer, 'Wind - Global');
