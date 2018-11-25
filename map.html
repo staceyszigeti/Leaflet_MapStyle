@@ -7,27 +7,87 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
 
+	<!--leaflet-velocity-->
+	<link rel="stylesheet" href="leaflet-velocity.css" />
+	<script src="leaflet-velocity.js"></script>
 	
 </head>
 <body>
 
 <a href="windy.html">Windly</a>
 
-<div id="mapid" style="width: 1800px; height: 850px;"></div>
+<div id="map" style="width: 1800px; height: 850px;"></div>
 <script>
 
-	var mymap = L.map('mapid').setView([-6.553416, 112.258888], 5);
+function initDemoMap(){
 
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+	var grayscale = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox.streets'
-	}).addTo(mymap);
+		attribution: 'Powered by &copy; <a href="http://fastrrr.com/", class="your_class">Fastrrr</a>',
+		id: 'mapbox.light'
+		});
+
+		black  = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+		maxZoom: 18,
+		attribution: 'Powered by &copy; <a href="http://fastrrr.com/", class="your_class">Fastrrr</a>',
+		});
+
+		osm  = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+		maxZoom: 18,
+		attribution: 'Powered by &copy; <a href="http://fastrrr.com/", class="your_class">Fastrrr</a>',
+		});
+
+	var overlays = L.layerGroup([osm]);
+
+	var map = L.map('map', {
+		center: [1.312132, 103.605678],
+		zoom: 10,
+		layers: [grayscale]
+	});
+
+	var baseLayers = {
+		"Grayscale": grayscale,
+		"Black": black,
+	};
+
+	var overLayers = {
+		"OSM": overlays,
+		//"Wind - Great Barrier Reef": velocityLayer
+	};
+
+	var layerControl = L.control.layers(baseLayers, overLayers);
+	layerControl.addTo(map);
+
+    return {
+        map: map,
+        layerControl: layerControl
+    };
+}
+
+var mapStuff = initDemoMap();
+var map = mapStuff.map;
+var layerControl = mapStuff.layerControl;
+
+// load data (u, v grids) from somewhere (e.g. https://github.com/danwild/wind-js-server)
+$.getJSON('wind-global.json', function (data) {
+
+	var velocityLayer = L.velocityLayer({
+		displayValues: true,
+		displayOptions: {
+			velocityType: 'GBR Wind',
+			displayPosition: 'bottomleft',
+			displayEmptyString: 'No wind data'
+		},
+		data: data,
+		maxVelocity: 10
+	});
+
+	layerControl.addOverlay(velocityLayer, 'Wind - Global');
+});
 
 </script>
 <br>
