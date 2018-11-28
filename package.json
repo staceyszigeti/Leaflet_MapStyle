@@ -1,0 +1,19 @@
+{
+  "name": "leaflet_mapstyle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Control.FullScreen.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/staceyszigeti/Leaflet_MapStyle.git"
+  },
+  "author": "Stacey Szigeti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/staceyszigeti/Leaflet_MapStyle/issues"
+  },
+  "homepage": "https://github.com/staceyszigeti/Leaflet_MapStyle#readme"
+}

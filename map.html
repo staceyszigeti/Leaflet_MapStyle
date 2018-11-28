@@ -14,6 +14,14 @@
 	<!--leaflet-velocity-->
 	<link rel="stylesheet" href="leaflet-velocity.css" />
 	<script src="leaflet-velocity.js"></script>
+
+	<!--leaflet-fullscreen - Leaflet.fullscreen-->
+	<link rel="stylesheet" href="Control.FullScreen.css" />
+	<script src="Control.FullScreen.js"></script>
+	 
+	<!--leaflet-measure- Leaflet.PolylineMeasure -->
+	<link rel="stylesheet" href="Leaflet.PolylineMeasure.css" />
+	<script src="Leaflet.PolylineMeasure.js"></script>
 	
 </head>
 <body>
@@ -22,6 +30,75 @@
 
 <div id="map" style="width: 1800px; height: 850px;"></div>
 <script>
+//Measure distance
+options = {
+    position: 'topleft',            // Position to show the control. Values: 'topright', 'topleft', 'bottomright', 'bottomleft'
+    unit: 'nautical miles',                 // Show imperial or metric distances. Values: 'metres', 'landmiles', 'nauticalmiles'
+    clearMeasurementsOnStop: true,  // Clear all the measurements when the control is unselected
+    showBearings: false,            // Whether bearings are displayed within the tooltips
+    bearingTextIn: 'In',             // language dependend label for inbound bearings
+    bearingTextOut: 'Out',          // language dependend label for outbound bearings
+    tooltipTextDraganddelete: 'Click and drag to <b>move point</b><br>Press SHIFT-key and click to <b>delete point</b>',
+    tooltipTextResume: '<br>Press CTRL-key and click to <b>resume line</b>',
+    tooltipTextAdd: 'Press CTRL-key and click to <b>add point</b>',
+                                    // language dependend labels for point's tooltips
+    measureControlTitleOn: 'Turn on PolylineMeasure',   // Title for the control going to be switched on
+    measureControlTitleOff: 'Turn off PolylineMeasure', // Title for the control going to be switched off
+    measureControlLabel: '&#8614;', // Label of the Measure control (maybe a unicode symbol)
+    measureControlClasses: [],      // Classes to apply to the Measure control
+    showClearControl: false,        // Show a control to clear all the measurements
+    clearControlTitle: 'Clear Measurements', // Title text to show on the clear measurements control button
+    clearControlLabel: '&times',    // Label of the Clear control (maybe a unicode symbol)
+    clearControlClasses: [],        // Classes to apply to clear control button
+    showUnitControl: false,         // Show a control to change the units of measurements
+    unitControlTitle: {             // Title texts to show on the Unit Control button
+        text: 'Change Units',
+        metres: 'metres',
+        kilometres: 'kilometres',
+        nauticalmiles: 'nautical miles'
+    },
+    unitControlLabel: {             // Label symbols to show in the Unit Control button
+        metres: 'm',
+        kilometres: 'km',
+        nauticalmiles: 'nm'
+    },
+    tempLine: {                     // Styling settings for the temporary dashed line
+        color: '#00f',              // Dashed line color
+        weight: 2                   // Dashed line weight
+    },          
+    fixedLine: {                    // Styling for the solid line
+        color: '#006',              // Solid line color
+        weight: 2                   // Solid line weight
+    },
+    startCircle: {                  // Style settings for circle marker indicating the starting point of the polyline
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#0f0',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+    },
+    intermedCircle: {               // Style settings for all circle markers between startCircle and endCircle
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#ff0',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+    },
+    currentCircle: {                // Style settings for circle marker indicating the latest point of the polyline during drawing a line
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#f0f',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+    },
+    endCircle: {                    // Style settings for circle marker indicating the last point of the polyline
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#f00',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+    },
+};
 
 function initDemoMap(){
 
@@ -46,7 +123,11 @@ function initDemoMap(){
 	var map = L.map('map', {
 		center: [1.312132, 103.605678],
 		zoom: 10,
-		layers: [grayscale]
+		layers: [grayscale],
+		fullscreenControl: true,
+  		fullscreenControlOptions: {
+    		position: 'topleft'
+  		}
 	});
 
 	var baseLayers = {
@@ -61,6 +142,9 @@ function initDemoMap(){
 
 	var layerControl = L.control.layers(baseLayers, overLayers);
 	layerControl.addTo(map);
+
+	L.control.polylineMeasure({position:'topleft', unit:'nauticalmiles', showBearings:true, clearMeasurementsOnStop: false, showClearControl: true, showUnitControl: true}, options).addTo(map);
+	L.control.scale ({maxWidth:240, metric:true, imperial:false, position: 'bottomleft'}).addTo (map);
 
     return {
         map: map,
@@ -86,8 +170,8 @@ $.getJSON('wind-global.json', function (data) {
 		},
 		data: data,
 		minVelocity: 0,          // used to align color scale
-		maxVelocity: 10,         // used to align color scale
-		velocityScale: 0.020,    // modifier for particle animations, arbitrarily defaults to 0.005
+		maxVelocity: 30,         // used to align color scale
+		velocityScale: 0.018,    // modifier for particle animations, arbitrarily defaults to 0.005
 	});
 
 	layerControl.addOverlay(velocityLayer, 'Wind - Global');
@@ -121,13 +205,20 @@ layerControl.addOverlay(velocityLayer, 'Wind - Saját');
 <div id="mapid2" style="width: 1800px; height: 850px;"></div>
 <script>
 
-	var mymap = L.map('mapid2').setView([-6.553416, 112.258888], 5);
+	var mymap = L.map('mapid2', {
+		fullscreenControl: true,
+		fullscreenControlOptions: {
+			position: 'topleft'
+  		}
+	}).setView([-6.553416, 112.258888], 5);
 
 	L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
 		maxZoom: 18,
 		attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
 		id: 'mapbox.streets'
 	}).addTo(mymap);
+
+	
 
 </script>
 
