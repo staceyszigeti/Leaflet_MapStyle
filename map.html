@@ -23,9 +23,16 @@
 	<link rel="stylesheet" href="Leaflet.PolylineMeasure.css" />
 	<script src="Leaflet.PolylineMeasure.js"></script>
 
-	<!--leaflet-measure- Leaflet.MousePosition -->
+	<!--leaflet- Leaflet.MousePosition -->
 	<link rel="stylesheet" href="MousePosition.css" />
 	<script src="MousePosition.js"></script>
+
+	<!--leaflet GPX- LeafletPlayback -->
+	<script src="track/LeafletPlayback.js"></script>
+	<script src="track/demo-tracks.js"></script>
+	
+	<!-- GPX plugin for Leaflet -->
+	<script src="track/gpx.js"></script>
 
 
 </head>
@@ -126,7 +133,7 @@ function initDemoMap(){
 	var overlays = L.layerGroup([osm]);
 
 	var map = L.map('map', {
-		center: [1.312132, 103.605678],
+		center: [44.61131534, -123.4726739],
 		zoom: 10,
 		layers: [grayscale],
 		fullscreenControl: true,
@@ -134,6 +141,44 @@ function initDemoMap(){
     		position: 'topleft'
   		}
 	});
+
+	// =====================================================
+    // =============== Playback ============================
+    // =====================================================
+    
+    var shipIcon = L.icon({
+                            iconUrl: 'track/ship-icon.png',
+                            iconSize: [7, 20], // size of the icon
+                            shadowSize: [0, 0], // size of the shadow
+                            iconAnchor: [3.5, 10], // point of the icon which will correspond to marker's location
+                            shadowAnchor: [0, 0], // the same for the shadow
+                            popupAnchor: [0, -10] // point from which the popup should open relative to the iconAnchor
+                        });
+    // Playback options
+    var playbackOptions = {
+			playControl: true,
+			dateControl: true,
+			sliderControl: true,
+			orientIcons:true,
+			//tickLen: 1,
+			marker: function (featureData) {
+						return {
+							icon: shipIcon,
+							getPopup: function (feature) {
+								return feature.properties.title;
+							}
+						};
+					}
+    };
+	
+	//GPX
+	var gpx = 'track/evadnyito.gpx'; // URL to your GPX file or the GPX itself
+	new L.GPX(gpx, {async: true}).on('loaded', function(e) {
+		map.fitBounds(e.target.getBounds());
+	}).addTo(map);
+
+    // Initialize playback
+    //var playback = new L.Playback(map, demoTracks, null, playbackOptions); 
 
 	var baseLayers = {
 		"Grayscale": grayscale,
@@ -149,7 +194,7 @@ function initDemoMap(){
 	layerControl.addTo(map);
 
 	L.control.polylineMeasure({position:'topleft', unit:'nauticalmiles', showBearings:true, clearMeasurementsOnStop: false, showClearControl: true, showUnitControl: true}, options).addTo(map);
-	L.control.scale ({maxWidth:240, metric:true, imperial:false, position: 'bottomleft'}).addTo (map);
+	L.control.scale ({maxWidth:240, metric:true, imperial:false, position: 'bottomright'}).addTo (map);
 	L.control.mousePosition().addTo(map);
 
     return {
