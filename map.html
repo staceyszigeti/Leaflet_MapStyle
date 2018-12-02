@@ -133,7 +133,7 @@ function initDemoMap(){
 	var overlays = L.layerGroup([osm]);
 
 	var map = L.map('map', {
-		center: [44.61131534, -123.4726739],
+		//center: [44.61131534, -123.4726739],
 		zoom: 10,
 		layers: [grayscale],
 		fullscreenControl: true,
@@ -173,8 +173,16 @@ function initDemoMap(){
 	
 	//GPX
 	var gpx = 'track/evadnyito.gpx'; // URL to your GPX file or the GPX itself
-	new L.GPX(gpx, {async: true}).on('loaded', function(e) {
-		map.fitBounds(e.target.getBounds());
+	new L.GPX(gpx, {
+			async: true,
+			polyline_options: {
+			color: 'red',
+			opacity: 0.5,
+			weight: 2,
+			lineCap: 'round'
+			}}
+		).on('loaded', function(e) {
+			map.fitBounds(e.target.getBounds());
 	}).addTo(map);
 
     // Initialize playback
@@ -226,27 +234,6 @@ $.getJSON('wind-global.json', function (data) {
 	});
 
 	layerControl.addOverlay(velocityLayer, 'Wind - Global');
-});
-
-// load data (u, v grids) from somewhere (e.g. https://github.com/danwild/wind-js-server)
-$.getJSON('asd.json', function (data) {
-
-var velocityLayer = L.velocityLayer({
-	displayValues: true,
-	displayOptions: {
-		velocityType: 'GBR Wind',
-		position: 'bottomleft',
-		displayPosition: 'bottomleft',
-		displayEmptyString: 'No wind data',
-		speedUnit: 'kt',
-	},
-	data: data,
-	minVelocity: 0,          // used to align color scale
-	maxVelocity: 10,         // used to align color scale
-	velocityScale: 0.020,    // modifier for particle animations, arbitrarily defaults to 0.005
-});
-
-layerControl.addOverlay(velocityLayer, 'Wind - Saját');
 });
 
 </script>
