@@ -73,6 +73,6 @@ $(function() {
     control.addTo(map);
     
     // Add data
-    playback.addData(blueMountain);
+    //playback.addData(blueMountain);
        
 });
