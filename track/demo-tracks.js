@@ -4044,6 +4044,7 @@ var tillicum = {
   "properties": {
     "title" : "tillicum",
     "path_options" : { "color" : "red" },
+    /*array of UNIX timestamps*/
     "time": [
       1369786338000,
       1369786340000,
@@ -14049,5 +14050,5 @@ var blodgett = {
   }
 };
 
-//var demoTracks = [tillicum];
+//var demoTracks = [];
 var demoTracks = [blodgett, tillicum];
