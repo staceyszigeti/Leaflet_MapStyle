@@ -42,7 +42,7 @@
 <br>
 <a href="map2.html">Map2</a>
 
-<div id="map" style="width: 1800px; height: 850px;"></div>
+<div id="map" class="map"></div>
 <script>
 //Measure distance
 options = {
@@ -137,11 +137,11 @@ function initDemoMap(){
 	var map = L.map('map', {
 		//center: [44.61131534, -123.4726739],
 		zoom: 10,
-		layers: [grayscale],
+		layers: [black, osm],
 		fullscreenControl: true,
   		fullscreenControlOptions: {
     		position: 'topleft'
-  		}
+  		},
 	});
 
 	// =====================================================
@@ -186,7 +186,7 @@ function initDemoMap(){
 		).on('loaded', function(e) {
 			map.fitBounds(e.target.getBounds());
 	}).addTo(map);
-
+	
     // Initialize playback
     //var playback = new L.Playback(map, demoTracks, null, playbackOptions); 
 
@@ -242,7 +242,7 @@ $.getJSON('wind-global.json', function (data) {
 <br>
 <br>
 
-<div id="mapid2" style="width: 1800px; height: 850px;"></div>
+<div id="mapid2" class="map"></div>
 <script>
 
 	var mymap = L.map('mapid2', {
@@ -263,7 +263,7 @@ $.getJSON('wind-global.json', function (data) {
 <br>
 <br>
 
-<div id="mapid3" style="width: 1800px; height: 850px;"></div>
+<div id="mapid3" class="map"></div>
 <script>
 
 	var mymap = L.map('mapid3').setView([1.312132, 103.605678], 10);
@@ -283,7 +283,7 @@ $.getJSON('wind-global.json', function (data) {
 <br>
 <br>
 
-<div id="mapid4" style="width: 1800px; height: 850px;"></div>
+<div id="mapid4" class="map"></div>
 <script>
 
 	var mymap = L.map('mapid4').setView([1.312132, 103.605678], 10);
@@ -303,7 +303,7 @@ $.getJSON('wind-global.json', function (data) {
 <br>
 <br>
 
-<div id="mapid5" style="width: 1800px; height: 850px;"></div>
+<div id="mapid5" class="map"></div>
 <script>
 
 	var mymap = L.map('mapid5').setView([1.312132, 103.605678], 10);

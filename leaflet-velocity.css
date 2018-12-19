@@ -10,3 +10,12 @@
   position: absolute;
   z-index: 1;
 }
+
+html, body {
+  height: 100%;
+}
+
+.map {
+  width: 98%;
+  height: 90%;
+}
