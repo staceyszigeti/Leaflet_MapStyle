@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	
+    
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100vw;
+        }
+    </style>
+    
 	<title>Leaflet</title>
 
 	<meta charset="utf-8" />
@@ -15,112 +26,13 @@
 	<link rel="stylesheet" href="leaflet-velocity.css" />
 	<script src="leaflet-velocity.js"></script>
 
-	<!--leaflet-fullscreen - Leaflet.fullscreen-->
-	<link rel="stylesheet" href="Control.FullScreen.css" />
-	<script src="Control.FullScreen.js"></script>
-	 
-	<!--leaflet-measure- Leaflet.PolylineMeasure -->
-	<link rel="stylesheet" href="Leaflet.PolylineMeasure.css" />
-	<script src="Leaflet.PolylineMeasure.js"></script>
-
-	<!--leaflet- Leaflet.MousePosition -->
-	<link rel="stylesheet" href="MousePosition.css" />
-	<script src="MousePosition.js"></script>
-
-	<!--leaflet GPX- LeafletPlayback -->
-	<script src="track/LeafletPlayback.js"></script>
-	<script src="track/demo-tracks.js"></script>
-	
-	<!-- GPX plugin for Leaflet -->
-	<script src="track/gpx.js"></script>
-
-
 </head>
 <body>
 
-<a href="windy.html">Windly</a>
-<br>
-<a href="map2.html">Map2</a>
-
 <div id="map" class="map"></div>
 <script>
-//Measure distance
-options = {
-    position: 'topleft',            // Position to show the control. Values: 'topright', 'topleft', 'bottomright', 'bottomleft'
-    unit: 'nautical miles',                 // Show imperial or metric distances. Values: 'metres', 'landmiles', 'nauticalmiles'
-    clearMeasurementsOnStop: true,  // Clear all the measurements when the control is unselected
-    showBearings: false,            // Whether bearings are displayed within the tooltips
-    bearingTextIn: 'In',             // language dependend label for inbound bearings
-    bearingTextOut: 'Out',          // language dependend label for outbound bearings
-    tooltipTextDraganddelete: 'Click and drag to <b>move point</b><br>Press SHIFT-key and click to <b>delete point</b>',
-    tooltipTextResume: '<br>Press CTRL-key and click to <b>resume line</b>',
-    tooltipTextAdd: 'Press CTRL-key and click to <b>add point</b>',
-                                    // language dependend labels for point's tooltips
-    measureControlTitleOn: 'Turn on PolylineMeasure',   // Title for the control going to be switched on
-    measureControlTitleOff: 'Turn off PolylineMeasure', // Title for the control going to be switched off
-    measureControlLabel: '&#8614;', // Label of the Measure control (maybe a unicode symbol)
-    measureControlClasses: [],      // Classes to apply to the Measure control
-    showClearControl: false,        // Show a control to clear all the measurements
-    clearControlTitle: 'Clear Measurements', // Title text to show on the clear measurements control button
-    clearControlLabel: '&times',    // Label of the Clear control (maybe a unicode symbol)
-    clearControlClasses: [],        // Classes to apply to clear control button
-    showUnitControl: false,         // Show a control to change the units of measurements
-    unitControlTitle: {             // Title texts to show on the Unit Control button
-        text: 'Change Units',
-        metres: 'metres',
-        kilometres: 'kilometres',
-        nauticalmiles: 'nautical miles'
-    },
-    unitControlLabel: {             // Label symbols to show in the Unit Control button
-        metres: 'm',
-        kilometres: 'km',
-        nauticalmiles: 'nm'
-    },
-    tempLine: {                     // Styling settings for the temporary dashed line
-        color: '#00f',              // Dashed line color
-        weight: 2                   // Dashed line weight
-    },          
-    fixedLine: {                    // Styling for the solid line
-        color: '#006',              // Solid line color
-        weight: 2                   // Solid line weight
-    },
-    startCircle: {                  // Style settings for circle marker indicating the starting point of the polyline
-        color: '#000',              // Color of the border of the circle
-        weight: 1,                  // Weight of the circle
-        fillColor: '#0f0',          // Fill color of the circle
-        fillOpacity: 1,             // Fill opacity of the circle
-        radius: 3                   // Radius of the circle
-    },
-    intermedCircle: {               // Style settings for all circle markers between startCircle and endCircle
-        color: '#000',              // Color of the border of the circle
-        weight: 1,                  // Weight of the circle
-        fillColor: '#ff0',          // Fill color of the circle
-        fillOpacity: 1,             // Fill opacity of the circle
-        radius: 3                   // Radius of the circle
-    },
-    currentCircle: {                // Style settings for circle marker indicating the latest point of the polyline during drawing a line
-        color: '#000',              // Color of the border of the circle
-        weight: 1,                  // Weight of the circle
-        fillColor: '#f0f',          // Fill color of the circle
-        fillOpacity: 1,             // Fill opacity of the circle
-        radius: 3                   // Radius of the circle
-    },
-    endCircle: {                    // Style settings for circle marker indicating the last point of the polyline
-        color: '#000',              // Color of the border of the circle
-        weight: 1,                  // Weight of the circle
-        fillColor: '#f00',          // Fill color of the circle
-        fillOpacity: 1,             // Fill opacity of the circle
-        radius: 3                   // Radius of the circle
-    },
-};
 
 function initDemoMap(){
-
-	var grayscale = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		attribution: 'Powered by &copy; <a href="http://fastrrr.com/", class="your_class">Fastrrr</a>',
-		id: 'mapbox.light'
-		});
 
 		black  = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 		maxZoom: 18,
@@ -134,194 +46,112 @@ function initDemoMap(){
 
 	var overlays = L.layerGroup([osm]);
 
-	var map = L.map('map', {
-		//center: [44.61131534, -123.4726739],
-		zoom: 10,
-		layers: [black, osm],
-		fullscreenControl: true,
-  		fullscreenControlOptions: {
-    		position: 'topleft'
-  		},
-	});
+    var greenIcon = new L.Icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
 
-	// =====================================================
-    // =============== Playback ============================
-    // =====================================================
-    
-    var shipIcon = L.icon({
-                            iconUrl: 'track/ship-icon.png',
-                            iconSize: [7, 20], // size of the icon
-                            shadowSize: [0, 0], // size of the shadow
-                            iconAnchor: [3.5, 10], // point of the icon which will correspond to marker's location
-                            shadowAnchor: [0, 0], // the same for the shadow
-                            popupAnchor: [0, -10] // point from which the popup should open relative to the iconAnchor
-                        });
-    // Playback options
-    var playbackOptions = {
-			playControl: true,
-			dateControl: true,
-			sliderControl: true,
-			orientIcons:true,
-			//tickLen: 1,
-			marker: function (featureData) {
-						return {
-							icon: shipIcon,
-							getPopup: function (feature) {
-								return feature.properties.title;
-							}
-						};
-					}
-    };
-	
-	//GPX
-	var gpx = 'track/evadnyito.gpx'; // URL to your GPX file or the GPX itself
-	new L.GPX(gpx, {
-			async: true,
-			polyline_options: {
-			color: 'red',
-			opacity: 0.5,
-			weight: 2,
-			lineCap: 'round'
-			}}
-		).on('loaded', function(e) {
-			map.fitBounds(e.target.getBounds());
-	}).addTo(map);
-	
-    // Initialize playback
-    //var playback = new L.Playback(map, demoTracks, null, playbackOptions); 
+    var redIcon = new L.Icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
 
-	var baseLayers = {
-		"Grayscale": grayscale,
-		"Black": black,
-	};
+    var _1 = L.marker([46.913, 17.896817]).bindPopup('1 - 3,2m'),
+        _2    = L.marker([46.9022,	17.90505]).bindPopup('2 - 3,4m'),
+        _3    = L.marker([46.893517,	17.898333]).bindPopup('3 - 3,3m'),
+        _4    = L.marker([46.88755,	17.88975]).bindPopup('4 - 3m'),
+        _5    = L.marker([46.8877,	17.885933]).bindPopup('5 - 2,6m'),
+        _6    = L.marker([46.88335,	17.89255]).bindPopup('6 - 3m'),
+        _7    = L.marker([46.8805,	17.896117]).bindPopup('7 - 3m');
+        _8    = L.marker([46.866517,	17.891317]).bindPopup('8 - 3m'),
+        _9    = L.marker([46.89715,	17.8981]).bindPopup('9 - 3,8m'),
+        _10    = L.marker([46.88585,	17.897267], {icon: redIcon}).bindPopup('10 -  Első kardinális');
+        _11    = L.marker([46.887783,	17.882533]).bindPopup('11 - 3,6m'),
+        _12    = L.marker([46.88895,	17.9009]).bindPopup('12 - 3,2m'),
+        _13    = L.marker([46.889417,	17.902067]).bindPopup('13 - 3,2m'),
+        _14    = L.marker([46.889183,	17.903183]).bindPopup('14 - 2,9m'),
+        _15    = L.marker([46.889183,	17.903183]).bindPopup('15 - 2,9m'),
+        _16    = L.marker([46.891867,	17.904617]).bindPopup('16 - 2,9m'),
+        _17    = L.marker([46.894767,	17.907583]).bindPopup('17 - 3m'),
+        _18    = L.marker([46.894667,	17.90855]).bindPopup('18 - 2,7m'),
+        _19    = L.marker([46.895583,	17.910117]).bindPopup('19 - 3m'),
+        _20    = L.marker([46.89775,	17.911917]).bindPopup('20 - 2,7m'),
+        _21    = L.marker([46.89775,	17.911917]).bindPopup('21 - 2,7m'),
+        _22    = L.marker([46.900933,	17.913517]).bindPopup('22 - 2,4m'),
+        _23    = L.marker([46.904067,	17.9132], {icon: redIcon}).bindPopup('23 -  2,7 első É kardinális bójánk'),
+        _24    = L.marker([46.897433,	17.902683]).bindPopup('24 - 3,2m'),
+        _25    = L.marker([46.905483,	17.899333]).bindPopup('25 - 3,1m');
 
-	var overLayers = {
-		"OSM": overlays,
-		//"Wind - Great Barrier Reef": velocityLayer
-	};
+        var bouys = L.layerGroup([_1, _2, _3, _4, _5, _6, _7, _8, _10, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25]);
 
-	var layerControl = L.control.layers(baseLayers, overLayers);
-	layerControl.addTo(map);
+        var polylinePoints1 = [
+            [46.913, 17.896817],
+            [46.905483,	17.899333],
+            [46.897433,	17.902683],
+            [46.893517,	17.898333],
+        ];        
 
-	L.control.polylineMeasure({position:'topleft', unit:'nauticalmiles', showBearings:true, clearMeasurementsOnStop: false, showClearControl: true, showUnitControl: true}, options).addTo(map);
-	L.control.scale ({maxWidth:240, metric:true, imperial:false, position: 'bottomright'}).addTo (map);
-	L.control.mousePosition().addTo(map);
+        var polylinePoints2 = [
+            [46.887811, 17.891336],
+            [46.88755,	17.88975],
+            [46.8877,	17.885933],
+        ];      
 
-    return {
-        map: map,
-        layerControl: layerControl
-    };
+        var polylinePoints3 = [
+            [46.904067,	17.9132],
+            [46.89775,	17.911917],
+            [46.895583,	17.910117],
+
+            [46.894667,	17.90855],
+            [46.894767,	17.907583],
+            [46.891867,	17.904617],
+
+            [46.889183,	17.903183],
+            [46.889417,	17.902067],
+            [46.88895,	17.9009],
+
+            [46.88585,	17.897267],
+            [46.880015, 17.898392],
+            [46.866517,	17.891317],
+        ];    
+      
+        var polyline1 = L.polyline(polylinePoints1, {
+            color: 'red',
+            weight: 3,
+            });
+        var polyline2 = L.polyline(polylinePoints2, {
+            color: 'red',
+            weight: 3,
+            }); 
+        var polyline3 = L.polyline(polylinePoints3, {
+            color: 'red',
+            weight: 3,
+            }); 
+
+    navigator.geolocation.getCurrentPosition(function(location) {
+    var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+
+        var map = L.map('map', {
+            center: [46.893058, 17.888867],
+            zoom: 14,
+            layers: [black, osm, bouys, polyline1, polyline2, polyline3],
+        });
+
+        var marker = L.marker(latlng, {icon: greenIcon}).addTo(map);
+    });
 }
 
 var mapStuff = initDemoMap();
-var map = mapStuff.map;
-var layerControl = mapStuff.layerControl;
-
-// load data (u, v grids) from somewhere (e.g. https://github.com/danwild/wind-js-server)
-$.getJSON('wind-global.json', function (data) {
-
-	var velocityLayer = L.velocityLayer({
-		displayValues: true,
-		displayOptions: {
-			velocityType: 'GBR Wind',
-			position: 'bottomleft',
-			displayPosition: 'bottomleft',
-			displayEmptyString: 'No wind data',
-			speedUnit: 'kt',
-		},
-		data: data,
-		minVelocity: 0,          // used to align color scale
-		maxVelocity: 30,         // used to align color scale
-		velocityScale: 0.018,    // modifier for particle animations, arbitrarily defaults to 0.005
-	});
-
-	layerControl.addOverlay(velocityLayer, 'Wind - Global');
-});
 
 </script>
-<br>
-<br>
-
-<div id="mapid2" class="map"></div>
-<script>
-
-	var mymap = L.map('mapid2', {
-		fullscreenControl: true,
-		fullscreenControlOptions: {
-			position: 'topleft'
-  		}
-	}).setView([-6.553416, 112.258888], 5);
-
-	L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-		maxZoom: 18,
-		attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-		id: 'mapbox.streets'
-	}).addTo(mymap);
-
-</script>
-
-<br>
-<br>
-
-<div id="mapid3" class="map"></div>
-<script>
-
-	var mymap = L.map('mapid3').setView([1.312132, 103.605678], 10);
-
-	L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-		maxZoom: 18,
-		attribution: 'Powered by &copy; <a href="http://fastrrr.com/", class="your_class">Fastrrr</a>',
-		id: 'mapbox.streets'
-	}).addTo(mymap);
-	
-	var OpenSeaMap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
-	attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
-	}).addTo(mymap);;
-
-</script>
-
-<br>
-<br>
-
-<div id="mapid4" class="map"></div>
-<script>
-
-	var mymap = L.map('mapid4').setView([1.312132, 103.605678], 10);
-
-	L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-		maxZoom: 18,
-		attribution: 'Powered by &copy; <a href="http://fastrrr.com/", class="your_class">Fastrrr</a>',
-		id: 'mapbox.streets'
-	}).addTo(mymap);
-	
-	var OpenSeaMap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
-	attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
-	}).addTo(mymap);;
-
-</script>
-
-<br>
-<br>
-
-<div id="mapid5" class="map"></div>
-<script>
-
-	var mymap = L.map('mapid5').setView([1.312132, 103.605678], 10);
-
-	var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	}).addTo(mymap);
-	
-	var OpenWeatherMap_Wind = L.tileLayer('http://{s}.tile.openweathermap.org/map/wind/{z}/{x}/{y}.png?appid={apiKey}', {
-		maxZoom: 19,
-		attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
-		apiKey: '9b6efbfc381db86aa4922df9a21a20bd',
-		opacity: 0.5
-	}).addTo(mymap);
-
-</script>
-
 
 </body>
 </html>
